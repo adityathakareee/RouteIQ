@@ -75,7 +75,13 @@ fi
 echo -e "\n${BOLD}[2/6] Checking Git Status & Latest Commits...${NC}"
 cd "$PROJECT_DIR"
 if [ -d ".git" ]; then
-    echo -e "${GREEN}✓ Git repository detected. Fetching latest changes...${NC}"
+    echo -e "${GREEN}✓ Git repository detected. Checking remote...${NC}"
+    REPO_URL="https://github.com/adityathakareee/RouteIQ.git"
+    CURRENT_REMOTE="$(sudo -u "$ACTUAL_USER" git remote get-url origin 2>/dev/null || echo '')"
+    if [ -n "$CURRENT_REMOTE" ] && [ "$CURRENT_REMOTE" != "$REPO_URL" ]; then
+        echo "Updating origin URL to $REPO_URL..."
+        sudo -u "$ACTUAL_USER" git remote set-url origin "$REPO_URL" || true
+    fi
     sudo -u "$ACTUAL_USER" git fetch origin || true
     CURRENT_BRANCH="$(sudo -u "$ACTUAL_USER" git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'main')"
     sudo -u "$ACTUAL_USER" git pull origin "$CURRENT_BRANCH" || true
@@ -92,10 +98,13 @@ if [ ! -d "$VENV_DIR" ]; then
 fi
 
 # Install and upgrade pip packages
-echo "Installing backend dependencies from backend/requirements.txt..."
+echo "Installing backend dependencies..."
 export CMAKE_BUILD_PARALLEL_LEVEL=1
 sudo -u "$ACTUAL_USER" CMAKE_BUILD_PARALLEL_LEVEL=1 "$VENV_DIR/bin/pip" install --upgrade pip setuptools wheel
-sudo -u "$ACTUAL_USER" CMAKE_BUILD_PARALLEL_LEVEL=1 "$VENV_DIR/bin/pip" install -r "$PROJECT_DIR/backend/requirements.txt"
+# Install core dependencies first
+sudo -u "$ACTUAL_USER" "$VENV_DIR/bin/pip" install fastapi "uvicorn[standard]" pydantic httpx scikit-learn numpy joblib pytest pytest-asyncio websockets
+# Attempt optional llama-cpp-python with prefer-binary
+sudo -u "$ACTUAL_USER" CMAKE_BUILD_PARALLEL_LEVEL=1 "$VENV_DIR/bin/pip" install "llama-cpp-python>=0.2.80" --prefer-binary || echo -e "${YELLOW}⚠️ Notice: llama-cpp-python build skipped; RouteIQ will operate via Live Cloud APIs & Intelligent Synthesizer mode.${NC}"
 
 # Ensure .env exists
 if [ ! -f "$PROJECT_DIR/.env" ] && [ -f "$PROJECT_DIR/.env.example" ]; then

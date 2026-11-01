@@ -39,6 +39,12 @@ cd "$PROJECT_DIR"
 # 1. Fetch Latest Commits from Git
 echo -e "${BOLD}[1/4] Pulling Latest Commits from GitHub...${NC}"
 if [ -d ".git" ]; then
+    REPO_URL="https://github.com/adityathakareee/RouteIQ.git"
+    CURRENT_REMOTE="$(git remote get-url origin 2>/dev/null || echo '')"
+    if [ -n "$CURRENT_REMOTE" ] && [ "$CURRENT_REMOTE" != "$REPO_URL" ]; then
+        echo "Updating origin URL to $REPO_URL..."
+        git remote set-url origin "$REPO_URL" || true
+    fi
     CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'main')"
     echo "Current branch: $CURRENT_BRANCH"
     git fetch origin
@@ -54,7 +60,8 @@ echo -e "\n${BOLD}[2/4] Updating Dependencies in Virtual Environment...${NC}"
 if [ -f "$VENV_DIR/bin/pip" ]; then
     export CMAKE_BUILD_PARALLEL_LEVEL=1
     "$VENV_DIR/bin/pip" install --upgrade pip setuptools wheel
-    "$VENV_DIR/bin/pip" install -r "$PROJECT_DIR/backend/requirements.txt"
+    "$VENV_DIR/bin/pip" install fastapi "uvicorn[standard]" pydantic httpx scikit-learn numpy joblib pytest pytest-asyncio websockets
+    "$VENV_DIR/bin/pip" install "llama-cpp-python>=0.2.80" --prefer-binary || true
     echo -e "${GREEN}✓ Dependencies up to date.${NC}"
 else
     echo -e "${RED}❌ Error: Virtual environment not found at $VENV_DIR. Run ./ec2_setup.sh first.${NC}"

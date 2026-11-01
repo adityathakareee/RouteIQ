@@ -497,6 +497,10 @@ try:
             })
         return models_list
 
+    @app.get("/chaos")
+    async def api_get_chaos():
+        return CHAOS_MANAGER.get_all_chaos()
+
     @app.post("/chaos")
     async def api_chaos(data: Dict[str, Any]):
         model_id = data.get("model_id")
@@ -513,7 +517,8 @@ try:
         CHAOS_MANAGER.reset_all()
         for cb in CIRCUIT_BREAKERS.values():
             cb.reset()
-        return {"status": "all chaos and circuit breakers reset"}
+        TELEMETRY_STORE.reset()
+        return {"status": "all chaos, circuit breakers, and telemetry reset"}
 
     @app.get("/audit")
     async def api_audit():
