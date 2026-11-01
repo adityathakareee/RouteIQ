@@ -37,7 +37,7 @@ export default function Keys() {
 
   return (
     <div className="keys">
-      <Panel title="Hosted model keys" sub="Without a key, hosted models fall back to the simulator, and their responses are labelled [SIMULATED].">
+      <Panel title="Hosted model keys" sub="Configure API keys to route queries to live external cloud providers (Groq, Gemini, OpenRouter, OpenAI, DeepSeek).">
         <div className="callout tone-amber small">
           The gateway applies keys to its whole process and writes them in plain text to <code>.env</code> on the server. Use this only on a gateway you control. Keys are never sent back to the browser. You only see whether each one is set.
         </div>

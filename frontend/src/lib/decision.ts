@@ -55,11 +55,11 @@ export function explain(r: RouteResponse, pref: string): string {
   return `${est}${hedge}${capReq}. ${passed} of ${r.candidates.length} models passed the hard constraints, and they were ranked by ${prefLabel(pref).toLowerCase()}.${fo} The request ran on ${r.chosen_model}.`;
 }
 
-/** Splits a route badge like "[SIMULATED]" into a tone for display. */
+/** Splits a route badge like "[LOCAL]" into a tone for display. */
 export function badgeTone(badge: string): 'mint' | 'violet' | 'amber' | 'coral' | 'muted' {
   if (/LIVE API/.test(badge)) return 'violet';
-  if (/LOCAL GGUF: Metal/.test(badge)) return 'mint';
-  if (/SIMULATED|INJECTED|Apple Silicon/.test(badge)) return 'amber';
+  if (/LOCAL GGUF|LOCAL|NATIVE/.test(badge)) return 'mint';
+  if (/INJECTED/.test(badge)) return 'amber';
   if (/RULE_ENFORCED/.test(badge)) return 'coral';
   return 'muted';
 }

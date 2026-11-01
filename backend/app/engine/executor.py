@@ -390,7 +390,7 @@ class ResilientExecutor:
                 capability=cap
             )
 
-        badge = "[INJECTED]" if injected_lat_ms > 0 else "[SIMULATED]"
+        badge = "[INJECTED]" if injected_lat_ms > 0 else "[LOCAL]"
         return resp_text, tokens_in, tokens_out, target_lat_ms, badge
 
     def execute_request(self, request: RouteRequest, simulate_delay: bool = True) -> RouteResponse:

@@ -148,7 +148,7 @@ function Baselines() {
       actions={<button className="btn ghost sm" onClick={run} disabled={busy}>{busy ? 'Running…' : 'Run comparison'}</button>}
     >
       <div className="callout tone-amber small">
-        <b>Modelled, not measured.</b> Both baseline columns are calculated from registry base latency and pricing, without calling any model. The RouteIQ column goes through the executor with simulated delays turned off. The baselines also don't account for the estimator's tier raise. Treat this as a sanity check, not a benchmark result.
+        <b>Modelled, not measured.</b> Both baseline columns are calculated from registry base latency and pricing, without calling any model. The RouteIQ column goes through the executor with test delays turned off. The baselines also don't account for the estimator's tier raise. Treat this as a sanity check, not a benchmark result.
       </div>
       {err && <div className="callout tone-coral">{err}</div>}
       {res && (

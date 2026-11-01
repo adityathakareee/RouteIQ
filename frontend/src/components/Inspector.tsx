@@ -24,11 +24,6 @@ export function DecisionInspector({ req, res, onInspect }: { req: ReqLike; res: 
           <Badge tone={badgeTone(a.badge)} title="Execution mode reported by the backend">{a.badge}</Badge>
           <Badge tone={res.auditor.compliant ? 'mint' : 'coral'}>{res.auditor.compliant ? 'Auditor: compliant' : 'Auditor: violation'}</Badge>
         </div>
-        {/Apple Silicon|SIMULATED/.test(a.badge) && (
-          <p className="note">
-            This mode means the backend generated the reply itself, without calling a real model: either the built-in simulator, or local text synthesis when llama-cpp isn't installed. The latency and cost figures come from the model registry.
-          </p>
-        )}
       </div>
 
       <div className="insp-sec">
