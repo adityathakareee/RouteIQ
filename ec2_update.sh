@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # RouteIQ: Automated AWS EC2 Code Update & Rebuild Script
-# VORTEXA 3.0 — Domain 2: AI Systems & Infrastructure (Problem Statement A-01)
+# Domain 2: AI Systems & Infrastructure (Problem Statement A-01)
 # ==============================================================================
 # Automates:
 #   1. Fetching and pulling all latest commits from GitHub
@@ -25,7 +25,7 @@ NC='\033[0m' # No Color
 echo -e "${CYAN}${BOLD}"
 echo "=================================================================="
 echo "⚡ RouteIQ: Automated EC2 Update & Service Restart"
-echo "   VORTEXA 3.0 — Fetch Latest GitHub Commits & Deploy"
+echo "   Fetch Latest GitHub Commits & Deploy"
 echo "=================================================================="
 echo -e "${NC}"
 

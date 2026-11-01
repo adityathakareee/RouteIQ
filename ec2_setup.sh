@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # RouteIQ: Automated AWS EC2 Instance Setup & Deployment Script
-# VORTEXA 3.0 — Domain 2: AI Systems & Infrastructure (Problem Statement A-01)
+# Domain 2: AI Systems & Infrastructure (Problem Statement A-01)
 # ==============================================================================
 # Automates:
 #   1. System packages installation (Python 3, venv, pip, git, nginx, curl)
@@ -25,7 +25,7 @@ NC='\033[0m' # No Color
 echo -e "${CYAN}${BOLD}"
 echo "=================================================================="
 echo "⚡ RouteIQ: Automated AWS EC2 Instance Setup & Deployment"
-echo "   VORTEXA 3.0 — ModelRouter AI Inference Gateway"
+echo "   ModelRouter AI Inference Gateway"
 echo "=================================================================="
 echo -e "${NC}"
 

@@ -60,7 +60,6 @@ export default function TopNav({ active }: { active: string }) {
       <a className="brand" href="#/" aria-label="RouteIQ overview">
         <Logo />
         <span className="brand-name">RouteIQ</span>
-        <span className="brand-ver mono">VORTEXA 3.0</span>
       </a>
       <div className="tabs">
         {PRIMARY.map((t) => (

@@ -29,7 +29,7 @@ export default function Settings() {
       </Panel>
       <Panel title="Environment">
         <KV k="gateway version" v={health?.version ?? '—'} />
-        <KV k="engine" v="VORTEXA 3.0" />
+        <KV k="engine" v="RouteIQ 3.0" />
         <KV k="reduced motion" v={reduced ? 'on (system setting)' : 'off (follows your system setting)'} />
       </Panel>
     </div>

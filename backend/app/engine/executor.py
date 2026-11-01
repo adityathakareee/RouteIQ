@@ -15,6 +15,7 @@ from ..chaos.manager import ChaosManager
 from ..storage.telemetry import TelemetryStore
 from ..estimators.multi_estimator import MultiEstimatorConsensus
 from .gguf_engine import GGUFEngine
+from .intelligent_synthesizer import synthesize_dynamic_response
 
 
 def compute_cost_matrix(
@@ -241,7 +242,66 @@ class ResilientExecutor:
                     t_out = usage.get("completion_tokens", max(10, len(choice.split()) * 2))
                     return choice, t_in, t_out, f"[LIVE API: DEEPSEEK ({target_model})]"
             except Exception:
-                return None
+                pass
+
+        # 7. Universal Provider Proxy: If an external key is set and local weights are unavailable,
+        # route prompt to the available cloud provider using appropriate model tier.
+        if groq_key:
+            if "coder" in model_id:
+                target_model = "qwen-2.5-coder-32b"
+            elif "r1" in model_id or "deepseek" in model_id:
+                target_model = "deepseek-r1-distill-llama-70b"
+            elif model_config.get("tier") == "easy":
+                target_model = "llama-3.1-8b-instant"
+            else:
+                target_model = "llama-3.3-70b-versatile"
+            try:
+                req_data = json.dumps({
+                    "model": target_model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": 300,
+                    "temperature": 0.3
+                }).encode("utf-8")
+                req = urllib.request.Request(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    data=req_data,
+                    headers={"Content-Type": "application/json", "Authorization": f"Bearer {groq_key}"},
+                    method="POST"
+                )
+                with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    choice = data["choices"][0]["message"]["content"]
+                    usage = data.get("usage", {})
+                    t_in = usage.get("prompt_tokens", max(10, len(prompt.split()) * 2))
+                    t_out = usage.get("completion_tokens", max(10, len(choice.split()) * 2))
+                    return choice, t_in, t_out, f"[LIVE API: GROQ ({target_model})]"
+            except Exception:
+                pass
+
+        if gemini_key:
+            target_model = "gemini-1.5-flash"
+            try:
+                req_data = json.dumps({
+                    "model": target_model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": 300,
+                    "temperature": 0.3
+                }).encode("utf-8")
+                req = urllib.request.Request(
+                    "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+                    data=req_data,
+                    headers={"Content-Type": "application/json", "Authorization": f"Bearer {gemini_key}"},
+                    method="POST"
+                )
+                with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    choice = data["choices"][0]["message"]["content"]
+                    usage = data.get("usage", {})
+                    t_in = usage.get("prompt_tokens", max(10, len(prompt.split()) * 2))
+                    t_out = usage.get("completion_tokens", max(10, len(choice.split()) * 2))
+                    return choice, t_in, t_out, f"[LIVE API: GEMINI ({target_model})]"
+            except Exception:
+                pass
 
         return None
 
@@ -322,38 +382,12 @@ class ResilientExecutor:
                 "- **Contraction Mapping**: The Bellman optimality operator is a $\\gamma$-contraction in supremum norm.\n"
                 "- **Uniqueness**: By the Banach fixed-point theorem, there is a unique solution $V^*$, which value iteration and Q-learning converge toward."
             )
-        elif "deepseek" in m_id or cap >= 0.90:
-            resp_text = (
-                f"<think>\n"
-                f"1. Deconstruct user prompt: \"{prompt[:80]}\"\n"
-                f"2. Apply multi-step logical chain with capability score {cap}.\n"
-                f"3. Verify edge cases, mathematical invariance, and contextual constraints.\n"
-                f"4. Synthesize verifiable step-by-step resolution.\n"
-                f"</think>\n\n"
-                f"**Detailed Solution**:\n\n"
-                f"Addressing your query: *\"{prompt.strip()}\"*\n\n"
-                f"Based on rigorous multi-step analysis, the optimal solution requires accounting for the relevant boundary conditions and executing with precision. All criteria have been verified and satisfy the required analytical standards."
-            )
-        elif "coder" in m_id:
-            resp_text = (
-                f"```python\n"
-                f"# Implementation generated by {name}\n"
-                f"def solve_task(data):\n"
-                f"    \"\"\"\n"
-                f"    Solution for: {prompt[:60]}\n"
-                f"    \"\"\"\n"
-                f"    # Process input efficiently\n"
-                f"    result = [x for x in data if x is not None]\n"
-                f"    return result\n"
-                f"```\n\n"
-                f"**Complexity**:\n"
-                f"- Time: $O(N)$\n"
-                f"- Space: $O(1)$"
-            )
         else:
-            resp_text = (
-                f"Direct response to your query: *\"{prompt.strip()}\"*\n\n"
-                f"The request has been evaluated and answered concisely according to your specified constraints."
+            resp_text = synthesize_dynamic_response(
+                prompt=prompt,
+                model_id=m_id,
+                model_name=name,
+                capability=cap
             )
 
         badge = "[INJECTED]" if injected_lat_ms > 0 else "[SIMULATED]"

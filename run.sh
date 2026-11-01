@@ -3,7 +3,7 @@ set -e
 
 # ==============================================================================
 # RouteIQ: Intelligent Cost-, Latency- & Quality-Aware AI Gateway
-# VORTEXA 3.0 — Domain 2: AI Systems & Infrastructure (Problem Statement A-01)
+# Domain 2: AI Systems & Infrastructure (Problem Statement A-01)
 # One-Command Bootstrapper & Verification Runner
 # ==============================================================================
 
@@ -12,7 +12,7 @@ cd "$SCRIPT_DIR"
 
 echo "=================================================================="
 echo "⚡ RouteIQ: Dynamic Cost-, Latency- & Quality-Aware AI Gateway"
-echo "   Domain 2: AI Systems & Infrastructure (VORTEXA 3.0)"
+echo "   Domain 2: AI Systems & Infrastructure"
 echo "=================================================================="
 
 # 1. Environment Detection: Prefer python environment with sklearn

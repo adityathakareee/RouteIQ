@@ -1,7 +1,6 @@
 # 🏆 RouteIQ: Intelligent Cost-, Latency- & Quality-Aware AI Gateway
 
-> **VORTEXA 3.0 Hackathon Submission**  
-> **Domain 2:** AI Systems & Infrastructure  
+> **AI Systems & Infrastructure Gateway**  
 > **Problem Statement A-01:** ModelRouter: Cost-, Latency- & Quality-Aware AI Routing  
 > **Core Axiom:** *"Rules decide. AI only advises. Failover can never relax a constraint."*
 
@@ -269,4 +268,4 @@ RouteLLM/
 ---
 
 ## ⚖️ License
-Developed for **VORTEXA 3.0 Hackathon (Domain 2: AI Systems & Infrastructure)**. All rights reserved.
+Developed for **AI Systems & Infrastructure Gateway**. All rights reserved.

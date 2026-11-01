@@ -321,7 +321,7 @@ export default function Home() {
         <div className="row gap-s">
           <Logo size={20} />
           <b>RouteIQ</b>
-          <span className="t-dim mono small">VORTEXA 3.0 engine</span>
+          <span className="t-dim mono small">AI Gateway</span>
         </div>
         <div className="t-dim small">Team PaniPuri Paglus, D.I.T. Pimpri, Pune. Domain 2: AI Systems &amp; Infrastructure (A-01)</div>
         <div className="row gap-m small">

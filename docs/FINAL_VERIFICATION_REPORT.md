@@ -1,6 +1,6 @@
 # 🏆 RouteIQ: Final End-to-End Verification & Readiness Report
 
-**Event:** VORTEXA 3.0 Hackathon  
+**Event:** AI Systems & Infrastructure Hackathon  
 **Domain 2:** AI Systems & Infrastructure  
 **Problem Statement A-01:** ModelRouter: Cost-, Latency- & Quality-Aware AI Routing  
 **Core Axiom:** *"Rules decide. AI only advises. Failover can never relax a constraint."*  
@@ -178,7 +178,7 @@ The RouteIQ server starts cleanly from the repository root on Windows without re
 
 ```powershell
 # Set working directory to the project repository
-cd "c:\Users\thaka\OneDrive\Desktop\Hackathon\VORTEXA 3.0\RouteLLM"
+cd "c:\Users\thaka\OneDrive\Desktop\Hackathon\RouteIQ\RouteIQ"
 
 # Start the RouteIQ Gateway Server (defaults to port 8000)
 python -m backend.app.main --port 8000
@@ -294,7 +294,7 @@ Executed and verified live at 5:43 PM IST before the 8:00 PM IST deadline:
 
 ### Verified Working PowerShell Startup Command:
 ```powershell
-cd "c:\Users\thaka\OneDrive\Desktop\Hackathon\VORTEXA 3.0\RouteLLM"
+cd "c:\Users\thaka\OneDrive\Desktop\Hackathon\RouteIQ\RouteIQ"
 python -m backend.app.main --port 8000
 ```
 
